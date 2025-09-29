@@ -1,0 +1,631 @@
+{
+	"openapi": "3.0.0",
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"CandidateJobMatch": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"candidate_profile_id": {
+						"type": "string"
+					},
+					"job_post_id": {
+						"type": "string"
+					},
+					"match_score": {
+						"type": "number",
+						"format": "double"
+					},
+					"match_details": {
+						"type": "string"
+					},
+					"created_at": {
+						"type": "string"
+					},
+					"updated_at": {
+						"type": "string"
+					},
+					"deleted_at": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"candidate_profile_id",
+					"job_post_id",
+					"match_score",
+					"match_details",
+					"created_at",
+					"updated_at",
+					"deleted_at"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_CandidateJobMatch.Exclude_keyofCandidateJobMatch.id-or-created_at-or-deleted_at-or-updated_at__": {
+				"properties": {
+					"candidate_profile_id": {
+						"type": "string"
+					},
+					"job_post_id": {
+						"type": "string"
+					},
+					"match_score": {
+						"type": "number",
+						"format": "double"
+					},
+					"match_details": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"candidate_profile_id",
+					"job_post_id",
+					"match_score",
+					"match_details"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_CandidateJobMatch.id-or-created_at-or-deleted_at-or-updated_at_": {
+				"$ref": "#/components/schemas/Pick_CandidateJobMatch.Exclude_keyofCandidateJobMatch.id-or-created_at-or-deleted_at-or-updated_at__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"CreateMatchParams": {
+				"$ref": "#/components/schemas/Omit_CandidateJobMatch.id-or-created_at-or-deleted_at-or-updated_at_"
+			},
+			"Company": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"website": {
+						"type": "string"
+					},
+					"created_at": {
+						"type": "string"
+					},
+					"deleted_at": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"website",
+					"created_at",
+					"deleted_at"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"JobPosting": {
+				"properties": {
+					"url": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"text": {
+						"type": "string"
+					},
+					"raw_text": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"url",
+					"title",
+					"text",
+					"raw_text"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Record_string.JobPosting-Array_": {
+				"properties": {},
+				"additionalProperties": {
+					"items": {
+						"$ref": "#/components/schemas/JobPosting"
+					},
+					"type": "array"
+				},
+				"type": "object",
+				"description": "Construct a type with a set of properties K of type T"
+			},
+			"CrawlResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"data": {
+						"$ref": "#/components/schemas/Record_string.JobPosting-Array_"
+					},
+					"error": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"success"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CrawlRequest": {
+				"properties": {
+					"companyIds": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"useJavaScript": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"companyIds"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"JobPost": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"url": {
+						"type": "string"
+					},
+					"company_id": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"content": {
+						"type": "string"
+					},
+					"created_at": {
+						"type": "string"
+					},
+					"deleted_at": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"url",
+					"company_id",
+					"title",
+					"content",
+					"created_at",
+					"deleted_at"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_CreateJobPostParams.Exclude_keyofCreateJobPostParams.id__": {
+				"properties": {
+					"url": {
+						"type": "string"
+					},
+					"company_id": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"content": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"url",
+					"company_id",
+					"title",
+					"content"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_CreateJobPostParams.id_": {
+				"$ref": "#/components/schemas/Pick_CreateJobPostParams.Exclude_keyofCreateJobPostParams.id__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"Pick_UpdateJobPostContextParams.context-or-jobFunction_": {
+				"properties": {
+					"context": {
+						"type": "string"
+					},
+					"jobFunction": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"context",
+					"jobFunction"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"UpdateJobPostContextRequest": {
+				"$ref": "#/components/schemas/Pick_UpdateJobPostContextParams.context-or-jobFunction_"
+			},
+			"CandidateProfile": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"resume": {
+						"type": "string"
+					},
+					"job_function": {
+						"type": "string"
+					},
+					"created_at": {
+						"type": "string"
+					},
+					"updated_at": {
+						"type": "string"
+					},
+					"deleted_at": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"job_function",
+					"created_at",
+					"updated_at",
+					"deleted_at"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "Job Agent Core API",
+		"version": "1.0.0",
+		"description": "API for managing job posts and companies"
+	},
+	"paths": {
+		"/candidate-job-matches": {
+			"post": {
+				"operationId": "Retrieve",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CandidateJobMatch"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Candidates and Jobs Matches"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateMatchParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/companies": {
+			"get": {
+				"operationId": "List",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Company"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Companies"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/companies/{id}": {
+			"get": {
+				"operationId": "Retrieve",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Company"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Companies"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/crawl/jobs": {
+			"post": {
+				"operationId": "CrawlJobPostsForCompanies",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CrawlResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"description": "Crawl job postings from company websites",
+				"tags": [
+					"Crawl"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CrawlRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/job-posts/{id}": {
+			"get": {
+				"operationId": "List",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/JobPost"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Job Postings"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/job-posts": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/JobPost"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Job Postings"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Omit_CreateJobPostParams.id_"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/job-posts/{id}/context": {
+			"put": {
+				"operationId": "UpdateContext",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/JobPost"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Job Postings"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateJobPostContextRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetContext",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/JobPost"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Job Postings"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/candidates/{id}": {
+			"get": {
+				"operationId": "Retrieve",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CandidateProfile"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Candidates"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	],
+	"basePath": "/api"
+}

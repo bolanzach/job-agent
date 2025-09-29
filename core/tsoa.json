@@ -1,0 +1,21 @@
+{
+  "entryFile": "src/server.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/controllers/**/*.ts"],
+  "spec": {
+    "outputDirectory": "src/generated",
+    "specVersion": 3,
+    "spec": {
+      "basePath": "/api",
+      "info": {
+        "title": "Job Agent Core API",
+        "version": "1.0.0",
+        "description": "API for managing job posts and companies"
+      }
+    }
+  },
+  "routes": {
+    "routesDir": "src/controllers",
+    "basePath": "/api"
+  }
+}
