@@ -81,35 +81,6 @@
 			"CreateMatchParams": {
 				"$ref": "#/components/schemas/Omit_CandidateJobMatch.id-or-created_at-or-deleted_at-or-updated_at_"
 			},
-			"Company": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"website": {
-						"type": "string"
-					},
-					"created_at": {
-						"type": "string"
-					},
-					"deleted_at": {
-						"type": "string",
-						"nullable": true
-					}
-				},
-				"required": [
-					"id",
-					"name",
-					"website",
-					"created_at",
-					"deleted_at"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"JobPosting": {
 				"properties": {
 					"url": {
@@ -177,6 +148,105 @@
 				},
 				"required": [
 					"companyIds"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EnhanceJobPostRequest": {
+				"properties": {
+					"ids": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"ids"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EnhanceCompanyRequest": {
+				"properties": {
+					"ids": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"ids"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreatePotentialMatchRequest": {
+				"properties": {
+					"candidateId": {
+						"type": "string"
+					},
+					"jobPostId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"candidateId",
+					"jobPostId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Company": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"website": {
+						"type": "string"
+					},
+					"created_at": {
+						"type": "string"
+					},
+					"deleted_at": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"website",
+					"created_at",
+					"deleted_at"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateCompanyParams": {
+				"properties": {
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UpdateCompanyContextRequest": {
+				"properties": {
+					"context": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"context"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -341,6 +411,119 @@
 				}
 			}
 		},
+		"/tasks/crawl/jobs": {
+			"post": {
+				"operationId": "CrawlJobPostsForCompanies",
+				"responses": {
+					"201": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CrawlResponse"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "No content"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					}
+				},
+				"tags": [
+					"Task Management"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CrawlRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/tasks/enhance/job-posts": {
+			"post": {
+				"operationId": "EnhanceJobPostings",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Task Management"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EnhanceJobPostRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/tasks/enhance/companies": {
+			"post": {
+				"operationId": "EnhanceCompanies",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Task Management"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EnhanceCompanyRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/tasks/matches": {
+			"post": {
+				"operationId": "Match",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Task Management"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreatePotentialMatchRequest"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/companies": {
 			"get": {
 				"operationId": "List",
@@ -367,6 +550,39 @@
 				],
 				"security": [],
 				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Company"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Companies"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCompanyParams"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/companies/{id}": {
@@ -400,40 +616,83 @@
 				]
 			}
 		},
-		"/crawl/jobs": {
-			"post": {
-				"operationId": "CrawlJobPostsForCompanies",
+		"/companies/{id}/context": {
+			"put": {
+				"operationId": "UpdateContext",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/CrawlResponse"
+									"items": {},
+									"type": "array"
 								}
 							}
 						}
-					},
-					"500": {
-						"description": "Internal Server Error"
 					}
 				},
-				"description": "Crawl job postings from company websites",
 				"tags": [
-					"Crawl"
+					"Companies"
 				],
 				"security": [],
-				"parameters": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
 				"requestBody": {
 					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CrawlRequest"
+								"$ref": "#/components/schemas/UpdateCompanyContextRequest"
 							}
 						}
 					}
 				}
+			},
+			"get": {
+				"operationId": "GetContext",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"context": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"context"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Companies"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/job-posts/{id}": {

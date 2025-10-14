@@ -7,7 +7,7 @@ __pycache__/
 venv/
 env/
 .venv
-.env
+../intelligence/.env
 
 # Distribution / packaging
 dist/
@@ -18,5 +18,4 @@ build/
 .coverage
 
 # Project specific
-job_results.json
 *.log

@@ -1,17 +1,17 @@
 import {
+  CreateJobPostParams,
   getJobPostById,
   getJobPostContextByJobId,
   insertJobPost,
   updateJobPostContext,
-  CreateJobPostParams,
-  UpdateJobPostContextParams
+  UpdateJobPostContextParams,
 } from "../repositories/jobPostRepository.ts";
 
 export class JobPostingsService {
   async createJobPosting(job: Omit<CreateJobPostParams, "id">) {
     return await insertJobPost({
       ...job,
-      id: crypto.randomUUID()
+      id: crypto.randomUUID(),
     });
   }
 
@@ -26,8 +26,6 @@ export class JobPostingsService {
   async getJobPostContextByJobId(id: string) {
     return await getJobPostContextByJobId(id);
   }
-
-
 }
 
 export const jobPostingsService = new JobPostingsService();

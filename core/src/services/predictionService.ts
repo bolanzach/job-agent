@@ -1,4 +1,4 @@
-import {jobPostingsService} from "./jobPostingsService.ts";
+import { jobPostingsService } from "./jobPostingsService.ts";
 
 export interface PredictionRequest {
   candidateId: string;

@@ -1,5 +1,5 @@
-import {companyService} from "../companyService.ts";
-import {jobPostingsService} from "../jobPostingsService.ts";
+import { ThreadedWorkQueueService, WorkQueue } from "../workQueueService.ts";
+import { EventsService, eventsService } from "../eventsService.ts";
 
 export interface CrawlRequest {
   companyIds: string[];
@@ -19,80 +19,68 @@ export interface JobPosting {
   raw_text: string;
 }
 
+export interface EnhanceJobPostRequest {
+  ids: string[];
+}
+
+export interface EnhanceCompanyRequest {
+  ids: string[];
+}
+
+export interface CreatePotentialMatchRequest {
+  candidateId: string;
+  jobPostId: string;
+}
+
 export class CrawlService {
-  async crawlJobPostsForCompanies(request: CrawlRequest): Promise<CrawlResponse> {
-    const worker = new Worker(
-      new URL("./worker.ts", import.meta.url).href,
-      { type: "module" }
-    );
+  constructor(private eventsService: EventsService) {}
 
-    const companies = await Promise.all(request.companyIds.map(id => companyService.getCompanyById(id)));
+  async crawlJobPostsForCompanies(request: CrawlRequest) {
+    // this.workQueue.add({
+    //   workerUrl: new URL("./crawlJobPostsForCompanies.ts", import.meta.url),
+    //   data: {
+    //     companyIds: request.companyIds,
+    //     useJavaScript: false,
+    //   },
+    // });
 
-    try {
-      const result = new Promise<CrawlResponse>((resolve, reject) => {
-        if (!worker) {
-          reject(new Error("Worker not initialized"));
-          return;
-        }
+    this.eventsService.emit("CrawlJobPostsForCompanies", {
+      companyIds: request.companyIds,
+      useJavaScript: false,
+    });
+  }
 
-        // Listen for messages from worker
-        worker.onmessage = (e: MessageEvent) => {
-          const response = e.data as CrawlResponse;
-          resolve(response);
-          worker.terminate();
-        };
-
-        // Handle worker errors
-        worker.onerror = (error) => {
-          reject(new Error(`Worker error: ${error}`));
-          worker.terminate();
-        };
-
-        // Handle worker termination
-        worker.onmessageerror = (error) => {
-          reject(new Error(`Worker message error: ${error}`));
-          worker.terminate();
-        };
-      });
-
-      worker.postMessage({
-        companyWebsites: companies.filter(c => c).map(c => c!.website),
-        useJavaScript: request.useJavaScript ?? false
-      });
-
-      console.log('[CrawlService] Crawl request sent to worker');
-
-      const jobPostingsPerCompany = await result;
-
-      Object.entries(jobPostingsPerCompany.data || {}).forEach(([website, postings]) => {
-        const company = companies.find(c => c && c.website === website)!;
-        try {
-          postings.forEach(posting => {
-            jobPostingsService.createJobPosting({
-              // id: crypto.randomUUID(),
-              url: posting.url,
-              company_id: company.id,
-              title: posting.title,
-              content: posting.text,
-              // created_at: new Date().toISOString(),
-              // deleted_at: null
-            });
-          });
-        } catch (err) {
-          //
-        }
-      });
-
-      return jobPostingsPerCompany;
-    } catch (error) {
-      worker.terminate();
-      console.error(`[CrawlService] Crawl failed: ${error}`);
-      return {
-        success: false,
-        error: `Failed to crawl: ${error}`
-      };
+  async enhanceJobPostings(params: EnhanceJobPostRequest) {
+    for (const id of params.ids) {
+      // this.workQueue.add({
+      //   workerUrl: new URL("./enhanceJobPost.ts", import.meta.url),
+      //   data: {
+      //     id,
+      //   },
+      // });
+      this.eventsService.emit("EnhanceJobPost", { id });
     }
+  }
+
+  async enhanceCompanies(params: EnhanceCompanyRequest) {
+    for (const id of params.ids) {
+      // this.workQueue.add({
+      //   workerUrl: new URL("./enhanceCompany.ts", import.meta.url),
+      //   data: {
+      //     id,
+      //   },
+      // });
+      this.eventsService.emit("EnhanceCompany", { id });
+    }
+  }
+
+  async createPotentialMatch(req: CreatePotentialMatchRequest) {
+    // this.workQueue.add({
+    //   workerUrl: new URL("./createPotentialMatch.ts", import.meta.url),
+    //   data: req,
+    // });
+    this.eventsService.emit("CreatePotentialMatch", req);
   }
 }
 
-export const crawlService = new CrawlService();
+export const crawlService = new CrawlService(eventsService);

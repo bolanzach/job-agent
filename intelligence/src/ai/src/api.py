@@ -30,6 +30,26 @@ def extract_job_function(job_description: str) -> str:
     return job_function
 
 
+def enhance_company_context(company):
+    """
+    Enhance a company with additional information.
+    """
+    prompt_path = Path(__file__).parent.parent / "prompts" / "enhance_company_context.md"
+    with open(prompt_path, 'r') as f:
+        prompt_template = f.read()
+
+    prompt = prompt_template.replace("{{COMPANY_NAME}}", company.get('name', ''))
+    prompt = prompt.replace("{{COMPANY_WEBSITE}}", company.get('website', ''))
+
+    client = get_llm_client()
+    response = client.generate_completion(
+        prompt=prompt,
+        max_tokens=1000,
+        temperature=0.4
+    )
+    return response.strip()
+
+
 def create_potential_match(candidate_profile, job_posting):
     """
     Evaluate the match between a candidate and a job posting using LLM.
@@ -47,22 +67,24 @@ def create_potential_match(candidate_profile, job_posting):
     response = client.generate_completion(
         prompt=prompt,
         max_tokens=500,
-        temperature=0.4
+        temperature=0.4,
+        advanced=True
     )
-
     return response.strip()
 
-    # # Parse the JSON response
-    # import json
-    # try:
-    #     result = json.loads(response.strip())
-    #     # Ensure the result has the expected structure
-    #     if 'rating' not in result or 'explanation' not in result:
-    #         raise ValueError("Missing required fields in response")
-    #     return result
-    # except (json.JSONDecodeError, ValueError) as e:
-    #     # Fallback if parsing fails
-    #     return {
-    #         "rating": 0,
-    #         "explanation": f"Failed to parse LLM response: {str(e)}"
-    #     }
+
+def extract_companies_with_llm(html_content: str):
+    prompt_path = Path(__file__).parent.parent / "prompts" / "extract_companies_from_html.md"
+    with open(prompt_path, 'r') as f:
+        prompt_template = f.read()
+
+    # Replace template variables
+    prompt = prompt_template.replace("{{HTML_CONTENT}}", html_content)
+
+    client = get_llm_client()
+    response = client.generate_completion(
+        prompt=prompt,
+        max_tokens=500,
+        temperature=0.4
+    )
+    return response.strip()

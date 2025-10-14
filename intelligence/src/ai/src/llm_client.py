@@ -12,10 +12,11 @@ class LLMClient(ABC):
 
     @abstractmethod
     def generate_completion(
-        self,
-        prompt: str,
-        max_tokens: int = 1000,
-        temperature: float = 0.7
+            self,
+            prompt: str,
+            max_tokens: int = 1000,
+            temperature: float = 0.7,
+            advanced: bool = False
     ) -> str:
         pass
 
@@ -28,16 +29,17 @@ class ClaudeClient(LLMClient):
         if not self.api_key:
             raise ValueError("ANTHROPIC_API_KEY environment variable not set")
         self.client = Anthropic(api_key=self.api_key)
-        self.model = os.getenv("LLM_MODEL")
+        self.model = os.getenv("LLM_MODEL_BASIC")
 
     def generate_completion(
-        self,
-        prompt: str,
-        max_tokens: int = 1000,
-        temperature: float = 0.7
+            self,
+            prompt: str,
+            max_tokens: int = 1000,
+            temperature: float = 0.7,
+            advanced: bool = False
     ) -> str:
         response = self.client.messages.create(
-            model=self.model,
+            model=self.model if not advanced else os.getenv("LLM_MODEL_ADVANCED"),
             max_tokens=max_tokens,
             temperature=temperature,
             messages=[
@@ -51,10 +53,11 @@ class MockClient(LLMClient):
     """Mock implementation for testing"""
 
     def generate_completion(
-        self,
-        prompt: str,
-        max_tokens: int = 1000,
-        temperature: float = 0.7
+            self,
+            prompt: str,
+            max_tokens: int = 1000,
+            temperature: float = 0.7,
+            advanced: bool = False
     ) -> str:
         return f"Mock response for prompt: {prompt[:50]}..."
 

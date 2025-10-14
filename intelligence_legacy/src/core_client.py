@@ -1,6 +1,9 @@
 import os
 import httpx
 from typing import Dict, Any, Optional
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class CoreAPIClient:
@@ -13,11 +16,6 @@ class CoreAPIClient:
                 "Content-Type": "application/json"
             }
         )
-
-    def create_company(self, company: str) -> Dict[str, Any]:
-        response = self.client.post("/api/companies", json={"name": company})
-        response.raise_for_status()
-        return response.json()
 
     def get_company(self, company_id: str) -> Dict[str, Any]:
         response = self.client.get(f"/api/companies/{company_id}")
@@ -40,10 +38,10 @@ class CoreAPIClient:
         return response.json()
 
     def update_job_post_context(
-            self,
-            job_post_id: str,
-            context: str,
-            job_function: str
+        self,
+        job_post_id: str,
+        context: str,
+        job_function: str
     ) -> Dict[str, Any]:
         payload = {
             "context": context,

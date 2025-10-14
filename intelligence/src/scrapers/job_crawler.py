@@ -6,7 +6,7 @@ import httpx
 from bs4 import BeautifulSoup
 from playwright.async_api import async_playwright, Page
 
-from core_client import CoreAPIClient
+from ..core_client import CoreAPIClient
 
 logger = logging.getLogger(__name__)
 
@@ -75,11 +75,6 @@ class JobCrawler:
         for element in soup.find_all(['nav', 'footer', 'header']):
             element.decompose()
 
-        # Remove common navigation class/id patterns
-        for selector in ['.navbar', '.navigation', '.footer', '.header', '#nav', '#footer', '#header']:
-            for element in soup.select(selector):
-                element.decompose()
-
         for script in soup(["script", "style", "meta", "link", "noscript"]):
             script.decompose()
 
@@ -88,7 +83,7 @@ class JobCrawler:
         text_lines = []
         for line in text.split('\n'):
             line = line.strip()
-            if line and len(line) > 20:
+            if line:
                 text_lines.append(line)
 
         return {
@@ -235,7 +230,7 @@ class JobCrawler:
         return job_postings
 
 
-async def crawl_company_jobs(company_ids: List[str], use_javascript: bool = False, max_depth = 10):
+async def crawl_company_jobs(company_ids: List[str], use_javascript: bool = False, max_depth=10):
     job_pages: Dict[str, List[PageContent]] = {}
     companies: Dict[str, Dict] = {}
 
@@ -287,6 +282,3 @@ async def crawl_company_jobs(company_ids: List[str], use_javascript: bool = Fals
                 except Exception as e:
                     # We expect some failures here due to duplicate job posts, so just log and continue
                     logger.warning(f"Failed to create job post for {posting['url']}: {e}")
-
-
-

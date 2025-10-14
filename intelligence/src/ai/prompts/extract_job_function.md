@@ -8,12 +8,14 @@ We identify each job function as a unique category that describes the primary ro
 
 These are the potential job functions.
 You must only select ONE from this list.
+The result must be in EXACTLY this format: {job_function_name}
 
 - {software_development}
 - {project_management}
 - {ux_design}
 - {sustainability_management}
 - {software_management}
+- {infrastructure_devops_sre}
 - {data_science}
 - {sales}
 - {marketing}

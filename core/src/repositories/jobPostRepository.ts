@@ -7,7 +7,7 @@ export type UpdateJobPostContextParams = {
   id: string;
   context: string;
   jobFunction: string;
-}
+};
 
 export function insertJobPost(params: CreateJobPostParams) {
   const query = `
@@ -20,7 +20,7 @@ export function insertJobPost(params: CreateJobPostParams) {
     params.url,
     params.company_id,
     params.title,
-    params.content
+    params.content,
   ]);
 }
 
@@ -41,8 +41,8 @@ export function getJobPostById(id: string): JobPost | undefined {
 
 export function updateJobPostContext(params: UpdateJobPostContextParams) {
   const query = `
-    INSERT INTO job_posting_contexts (job_post_id, context, job_function)
-    VALUES (?, ?, ?)
+    INSERT INTO job_posting_contexts (job_post_id, context, job_function, updated_at)
+    VALUES (?, ?, ?, CURRENT_TIMESTAMP)
     ON CONFLICT(job_post_id) DO UPDATE SET context = excluded.context, job_function = excluded.job_function
     RETURNING *;
   `;
@@ -50,7 +50,7 @@ export function updateJobPostContext(params: UpdateJobPostContextParams) {
   return db.query<JobPost>(query, [
     params.id,
     params.context,
-    params.jobFunction
+    params.jobFunction,
   ]);
 }
 

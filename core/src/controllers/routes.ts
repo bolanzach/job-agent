@@ -4,13 +4,11 @@
 import type { TsoaRoute } from '@tsoa/runtime';
 import {  fetchMiddlewares, ExpressTemplateService } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { PredictController } from './predictController';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CandidateJobMatchesController } from './candiateJobMatchesController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { CompaniesController } from './companiesController';
+import { TaskController } from './taskController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { CrawlController } from './crawlController';
+import { CompaniesController } from './companiesController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { JobPostingsController } from './jobPostingsController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -52,18 +50,6 @@ const models: TsoaRoute.Models = {
         "type": {"ref":"Omit_CandidateJobMatch.id-or-created_at-or-deleted_at-or-updated_at_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Company": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"string","required":true},
-            "name": {"dataType":"string","required":true},
-            "website": {"dataType":"string","required":true},
-            "created_at": {"dataType":"string","required":true},
-            "deleted_at": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "JobPosting": {
         "dataType": "refObject",
         "properties": {
@@ -95,6 +81,59 @@ const models: TsoaRoute.Models = {
         "properties": {
             "companyIds": {"dataType":"array","array":{"dataType":"string"},"required":true},
             "useJavaScript": {"dataType":"boolean"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "EnhanceJobPostRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "ids": {"dataType":"array","array":{"dataType":"string"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "EnhanceCompanyRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "ids": {"dataType":"array","array":{"dataType":"string"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreatePotentialMatchRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "candidateId": {"dataType":"string","required":true},
+            "jobPostId": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Company": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "website": {"dataType":"string","required":true},
+            "created_at": {"dataType":"string","required":true},
+            "deleted_at": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateCompanyParams": {
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UpdateCompanyContextRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "context": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -193,6 +232,126 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsTaskController_crawlJobPostsForCompanies: Record<string, TsoaRoute.ParameterSchema> = {
+                request: {"in":"body","name":"request","required":true,"ref":"CrawlRequest"},
+        };
+        app.post('/api/tasks/crawl/jobs',
+            ...(fetchMiddlewares<RequestHandler>(TaskController)),
+            ...(fetchMiddlewares<RequestHandler>(TaskController.prototype.crawlJobPostsForCompanies)),
+
+            async function TaskController_crawlJobPostsForCompanies(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsTaskController_crawlJobPostsForCompanies, request, response });
+
+                const controller = new TaskController();
+
+              await templateService.apiHandler({
+                methodName: 'crawlJobPostsForCompanies',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsTaskController_enhanceJobPostings: Record<string, TsoaRoute.ParameterSchema> = {
+                req: {"in":"body","name":"req","required":true,"ref":"EnhanceJobPostRequest"},
+        };
+        app.post('/api/tasks/enhance/job-posts',
+            ...(fetchMiddlewares<RequestHandler>(TaskController)),
+            ...(fetchMiddlewares<RequestHandler>(TaskController.prototype.enhanceJobPostings)),
+
+            async function TaskController_enhanceJobPostings(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsTaskController_enhanceJobPostings, request, response });
+
+                const controller = new TaskController();
+
+              await templateService.apiHandler({
+                methodName: 'enhanceJobPostings',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsTaskController_enhanceCompanies: Record<string, TsoaRoute.ParameterSchema> = {
+                req: {"in":"body","name":"req","required":true,"ref":"EnhanceCompanyRequest"},
+        };
+        app.post('/api/tasks/enhance/companies',
+            ...(fetchMiddlewares<RequestHandler>(TaskController)),
+            ...(fetchMiddlewares<RequestHandler>(TaskController.prototype.enhanceCompanies)),
+
+            async function TaskController_enhanceCompanies(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsTaskController_enhanceCompanies, request, response });
+
+                const controller = new TaskController();
+
+              await templateService.apiHandler({
+                methodName: 'enhanceCompanies',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsTaskController_match: Record<string, TsoaRoute.ParameterSchema> = {
+                req: {"in":"body","name":"req","required":true,"ref":"CreatePotentialMatchRequest"},
+        };
+        app.post('/api/tasks/matches',
+            ...(fetchMiddlewares<RequestHandler>(TaskController)),
+            ...(fetchMiddlewares<RequestHandler>(TaskController.prototype.match)),
+
+            async function TaskController_match(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsTaskController_match, request, response });
+
+                const controller = new TaskController();
+
+              await templateService.apiHandler({
+                methodName: 'match',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsCompaniesController_list: Record<string, TsoaRoute.ParameterSchema> = {
         };
         app.get('/api/companies',
@@ -211,6 +370,36 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'list',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsCompaniesController_create: Record<string, TsoaRoute.ParameterSchema> = {
+                params: {"in":"body","name":"params","required":true,"ref":"CreateCompanyParams"},
+        };
+        app.post('/api/companies',
+            ...(fetchMiddlewares<RequestHandler>(CompaniesController)),
+            ...(fetchMiddlewares<RequestHandler>(CompaniesController.prototype.create)),
+
+            async function CompaniesController_create(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsCompaniesController_create, request, response });
+
+                const controller = new CompaniesController();
+
+              await templateService.apiHandler({
+                methodName: 'create',
                 controller,
                 response,
                 next,
@@ -252,25 +441,56 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsCrawlController_crawlJobPostsForCompanies: Record<string, TsoaRoute.ParameterSchema> = {
-                request: {"in":"body","name":"request","required":true,"ref":"CrawlRequest"},
+        const argsCompaniesController_updateContext: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                request: {"in":"body","name":"request","required":true,"ref":"UpdateCompanyContextRequest"},
         };
-        app.post('/api/crawl/jobs',
-            ...(fetchMiddlewares<RequestHandler>(CrawlController)),
-            ...(fetchMiddlewares<RequestHandler>(CrawlController.prototype.crawlJobPostsForCompanies)),
+        app.put('/api/companies/:id/context',
+            ...(fetchMiddlewares<RequestHandler>(CompaniesController)),
+            ...(fetchMiddlewares<RequestHandler>(CompaniesController.prototype.updateContext)),
 
-            async function CrawlController_crawlJobPostsForCompanies(request: ExRequest, response: ExResponse, next: any) {
+            async function CompaniesController_updateContext(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsCrawlController_crawlJobPostsForCompanies, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsCompaniesController_updateContext, request, response });
 
-                const controller = new CrawlController();
+                const controller = new CompaniesController();
 
               await templateService.apiHandler({
-                methodName: 'crawlJobPostsForCompanies',
+                methodName: 'updateContext',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsCompaniesController_getContext: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
+        };
+        app.get('/api/companies/:id/context',
+            ...(fetchMiddlewares<RequestHandler>(CompaniesController)),
+            ...(fetchMiddlewares<RequestHandler>(CompaniesController.prototype.getContext)),
+
+            async function CompaniesController_getContext(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsCompaniesController_getContext, request, response });
+
+                const controller = new CompaniesController();
+
+              await templateService.apiHandler({
+                methodName: 'getContext',
                 controller,
                 response,
                 next,

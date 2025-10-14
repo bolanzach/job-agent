@@ -1,7 +1,10 @@
-import {db} from "../db/database.ts";
-import {CandidateJobMatch} from "../db/models.ts";
+import { db } from "../db/database.ts";
+import { CandidateJobMatch } from "../db/models.ts";
 
-export type CreateMatchParams = Omit<CandidateJobMatch, 'id' | 'created_at' | 'deleted_at' | 'updated_at'>;
+export type CreateMatchParams = Omit<
+  CandidateJobMatch,
+  "id" | "created_at" | "deleted_at" | "updated_at"
+>;
 
 export function createMatch(params: CreateMatchParams): CandidateJobMatch {
   const query = `
@@ -14,7 +17,7 @@ export function createMatch(params: CreateMatchParams): CandidateJobMatch {
     params.candidate_profile_id,
     params.job_post_id,
     params.match_score,
-    params.match_details
+    params.match_details,
   ]);
   return results[0];
 }

@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno run --inspect-brk --watch --unstable-sloppy-imports --allow-net --allow-read --allow-write --allow-env --allow-run --allow-ffi src/main.ts",
+    "dev": "deno run --watch --unstable-sloppy-imports --allow-net --allow-read --allow-write --allow-env --allow-run --allow-ffi src/main.ts",
     "start": "deno run --unstable-sloppy-imports --allow-net --allow-read --allow-write --allow-env --allow-run --allow-ffi src/main.ts",
     "test": "deno test --allow-read --allow-write",
     "lint": "deno lint",
@@ -16,7 +16,10 @@
   },
   "compilerOptions": {
     "strict": true,
-    "lib": ["deno.window", "deno.worker"],
+    "lib": [
+      "deno.window",
+      "deno.worker"
+    ],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },

@@ -1,5 +1,5 @@
-import {db} from "../db/database.ts";
-import {CandidateProfile} from "../db/models.ts";
+import { db } from "../db/database.ts";
+import { CandidateProfile } from "../db/models.ts";
 
 export function getCandidateById(id: string): CandidateProfile | undefined {
   const query = `

@@ -1,4 +1,4 @@
-import {getCandidateById} from "../repositories/candidateRepository.ts";
+import { getCandidateById } from "../repositories/candidateRepository.ts";
 
 export class CandidateService {
   async getById(id: string) {

@@ -1,7 +1,7 @@
 import sys
 
-from ai.src.api import extract_job_function
-from core_client import CoreAPIClient
+from intelligence.src.ai.src.api import extract_job_function
+from intelligence_legacy.src.core_client import CoreAPIClient
 
 
 def enhance_job_posting(job_post_id: str):
@@ -12,10 +12,8 @@ def enhance_job_posting(job_post_id: str):
         with CoreAPIClient() as client:
             job_post = client.get_job_post(job_post_id)
 
-        print(job_post)
         job_description = job_post.get('content', '')
         extracted_job_function = extract_job_function(job_description)
-        print(extracted_job_function)
 
         with CoreAPIClient() as client:
             client.update_job_post_context(

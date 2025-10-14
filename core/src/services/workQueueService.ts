@@ -1,8 +1,10 @@
-
 export class WorkQueueService<T> {
   private queue: T[] = [];
 
-  constructor(private runWork: (item: T) => Promise<void>, private delay: number = 1000) {}
+  constructor(
+    private runWork: (item: T) => Promise<void>,
+    private delay: number = 1000,
+  ) {}
 
   add(item: T) {
     this.queue.push(item);
@@ -17,26 +19,26 @@ export class WorkQueueService<T> {
       try {
         await this.runWork(item);
       } catch (error) {
-        console.error('Error processing work item:', error);
+        console.error("Error processing work item:", error);
       }
       this.queue.shift();
       if (this.queue.length > 0) {
-        await new Promise(resolve => setTimeout(resolve, this.delay));
+        await new Promise((resolve) => setTimeout(resolve, this.delay));
       }
     }
   }
 }
 
 export type ThreadedWorkQueueItem = {
-  worker: string;
+  workerUrl: URL;
   data: unknown;
-}
+};
 
 const runThreadedWork = async (item: ThreadedWorkQueueItem): Promise<void> => {
   return new Promise((resolve, reject) => {
     const worker = new Worker(
-      new URL(item.worker, import.meta.url).href,
-      { type: "module" }
+      item.workerUrl,
+      { type: "module" },
     );
 
     worker.onmessage = (_e: MessageEvent) => {
@@ -45,7 +47,7 @@ const runThreadedWork = async (item: ThreadedWorkQueueItem): Promise<void> => {
     };
 
     worker.onerror = (error) => {
-      reject(new Error(`Worker error: ${error}`));
+      reject(new Error(`Worker error: ${error.message}`));
       worker.terminate();
     };
 
@@ -56,12 +58,13 @@ const runThreadedWork = async (item: ThreadedWorkQueueItem): Promise<void> => {
 
     worker.postMessage(item.data);
   });
-}
+};
 
-export class ThreadedWorkQueueService extends WorkQueueService<ThreadedWorkQueueItem> {
+export class ThreadedWorkQueueService
+  extends WorkQueueService<ThreadedWorkQueueItem> {
   constructor(delay?: number) {
     super(runThreadedWork, delay);
   }
 }
 
-export const workQueue = new ThreadedWorkQueueService();
+export const WorkQueue = new ThreadedWorkQueueService();

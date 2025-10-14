@@ -5,14 +5,9 @@ Intelligence module CLI - Main entry point for all AI/LLM tasks
 import sys
 import argparse
 
-from job_posting.main import enhance_job_posting
-from match.main import create_potential_match
-
-
-def enhance_company(company_id: str):
-    """Enhance company profile with additional information."""
-    print(f"Enhancing company {company_id} - Not implemented yet")
-    # TODO: Implement company enhancement logic
+from intelligence.src.job_posting import enhance_job_posting
+from intelligence.src.company.main import enhance_company
+from intelligence.src.match import create_potential_match
 
 
 def main():
