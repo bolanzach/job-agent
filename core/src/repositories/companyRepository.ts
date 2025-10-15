@@ -40,7 +40,7 @@ export function createCompany(params: CreateCompanyParams) {
 
 export function getCompanyById(id: string): Company | undefined {
   const query = `
-    SELECT id, name, website, created_at, deleted_at
+    SELECT *
     FROM companies
     WHERE id = ? AND deleted_at IS NULL
   `;
@@ -52,7 +52,7 @@ export function getCompanyById(id: string): Company | undefined {
 export function updateCompany(params: UpdateCompanyParams) {
   const query = `
     UPDATE companies
-    SET website = ?, updated_at = CURRENT_TIMESTAMP
+    SET website = ?
     WHERE id = ? AND deleted_at IS NULL
     RETURNING *
   `;

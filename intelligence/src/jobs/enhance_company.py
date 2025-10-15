@@ -3,8 +3,7 @@ import httpx
 from urllib.parse import quote
 from bs4 import BeautifulSoup
 
-from intelligence.src.ai.src.api import enhance_company_context
-from intelligence.src.core_client import CoreAPIClient
+from ..core_client import CoreAPIClient
 
 
 def search_company_website(company_name: str) -> str | None:
@@ -57,12 +56,9 @@ def enhance_company(company_id: str):
             if website:
                 print(f"Found website for {company['name']}: {website}")
                 with CoreAPIClient() as client:
-                    response = client.client.put(
-                        f"/api/companies/{company_id}",
-                        json={"website": website}
-                    )
-                    response.raise_for_status()
-                company['website'] = website
+                    client.update_company(company_id, {
+                        "website": website
+                    })
 
         # enhanced_context = enhance_company_context(company)
         #
@@ -71,5 +67,6 @@ def enhance_company(company_id: str):
         #     client.update_company_context(company_id, {
         #         "context": enhanced_context
         #     })
+
     except Exception as e:
         print(f"Error enhancing Company: {e}")

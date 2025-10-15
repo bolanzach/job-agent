@@ -4,8 +4,8 @@ from typing import List, Dict, Set
 from urllib.parse import urlparse, quote, urljoin
 import httpx
 from bs4 import BeautifulSoup
-from intelligence.src.ai.src.api import extract_companies_with_llm
-from intelligence.src.core_client import CoreAPIClient
+from ..ai.src.api import extract_companies_with_llm
+from ..core_client import CoreAPIClient
 
 logger = logging.getLogger(__name__)
 

@@ -11,7 +11,7 @@ self.onmessage = async (e: MessageEvent<{ id: string }>) => {
     const args = [
       "main.py",
       "enhance-company",
-      ...id,
+      id,
     ];
 
     const intelligenceDir =

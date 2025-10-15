@@ -100,47 +100,47 @@ class JobCrawler:
         """
         try:
             logger.info(f"Looking for careers page on: {company_url}")
-            html = await self.fetch_page(company_url)
-            soup = BeautifulSoup(html, 'lxml')
+            # html = await self.fetch_page(company_url)
+            # soup = BeautifulSoup(html, 'lxml')
 
-            careers_patterns = [
-                'careers', 'jobs', 'join-us', 'join-our-team', 'work-with-us',
-                'opportunities', 'openings', 'hiring', 'employment', 'vacancies',
-                'talent', 'recruitment', 'work-at', 'life-at'
-            ]
-
-            nav_elements = soup.find_all(['nav', 'header', 'footer'])
-            for nav in nav_elements:
-                links = nav.find_all('a', href=True)
-                for link in links:
-                    href = link['href']
-                    text = (link.get_text() or '').lower().strip()
-                    href_lower = href.lower()
-
-                    if any(pattern in href_lower or pattern in text for pattern in careers_patterns):
-                        careers_url = urljoin(company_url, href)
-                        if urlparse(careers_url).netloc == urlparse(company_url).netloc:
-                            logger.info(f"Found careers page: {careers_url}")
-                            return careers_url
-
-            all_links = soup.find_all('a', href=True)
-            for link in all_links:
-                href = link['href']
-                text = (link.get_text() or '').lower().strip()
-                href_lower = href.lower()
-
-                score = 0
-                for pattern in careers_patterns:
-                    if pattern in href_lower:
-                        score += 2
-                    if pattern in text:
-                        score += 1
-
-                if score >= 2:
-                    careers_url = urljoin(company_url, href)
-                    if urlparse(careers_url).netloc == urlparse(company_url).netloc:
-                        logger.info(f"Found careers page: {careers_url}")
-                        return careers_url
+            # careers_patterns = [
+            #     'careers', 'jobs', 'join-us', 'join-our-team', 'work-with-us',
+            #     'opportunities', 'openings', 'hiring', 'employment', 'vacancies',
+            #     'talent', 'recruitment', 'work-at', 'life-at'
+            # ]
+            #
+            # nav_elements = soup.find_all(['nav', 'header', 'footer'])
+            # for nav in nav_elements:
+            #     links = nav.find_all('a', href=True)
+            #     for link in links:
+            #         href = link['href']
+            #         text = (link.get_text() or '').lower().strip()
+            #         href_lower = href.lower()
+            #
+            #         if any(pattern in href_lower or pattern in text for pattern in careers_patterns):
+            #             careers_url = urljoin(company_url, href)
+            #             if urlparse(careers_url).netloc == urlparse(company_url).netloc:
+            #                 logger.info(f"Found careers page: {careers_url}")
+            #                 return careers_url
+            #
+            # all_links = soup.find_all('a', href=True)
+            # for link in all_links:
+            #     href = link['href']
+            #     text = (link.get_text() or '').lower().strip()
+            #     href_lower = href.lower()
+            #
+            #     score = 0
+            #     for pattern in careers_patterns:
+            #         if pattern in href_lower:
+            #             score += 2
+            #         if pattern in text:
+            #             score += 1
+            #
+            #     if score >= 2:
+            #         careers_url = urljoin(company_url, href)
+            #         if urlparse(careers_url).netloc == urlparse(company_url).netloc:
+            #             logger.info(f"Found careers page: {careers_url}")
+            #             return careers_url
 
             common_paths = [
                 '/careers', '/jobs', '/career', '/job', '/opportunities',
@@ -150,10 +150,10 @@ class JobCrawler:
             for path in common_paths:
                 test_url = urljoin(company_url, path)
                 try:
-                    test_response = await self.client.head(test_url, follow_redirects=True)
+                    test_response = await self.client.get(test_url, follow_redirects=True)
                     if test_response.status_code == 200:
                         logger.info(f"Found careers page at common path: {test_url}")
-                        return test_url
+                        return str(test_response.url)
                 except:
                     continue
 
@@ -230,7 +230,7 @@ class JobCrawler:
         return job_postings
 
 
-async def crawl_company_jobs(company_ids: List[str], use_javascript: bool = False, max_depth=10):
+async def crawl_company_jobs(company_ids: List[str], use_javascript: bool = False, max_depth=1):
     job_pages: Dict[str, List[PageContent]] = {}
     companies: Dict[str, Dict] = {}
 

@@ -4,7 +4,8 @@ Example usage of the job crawler
 """
 import asyncio
 import logging
-from companies_crawler import discover_companies
+from .companies_crawler import discover_companies
+from .job_crawler import crawl_company_jobs
 
 # Configure logging
 logging.basicConfig(
@@ -27,5 +28,17 @@ async def example_crawl_companies():
     return results
 
 
+async def example_crawl_jobs():
+    company_ids = [
+        "f39f0ae8-c0f5-40af-916e-236dcf1ecb80",
+    ]
+
+    print("Starting jobs crawler...")
+
+    results = await crawl_company_jobs(company_ids, use_javascript=True)
+
+    return results
+
+
 if __name__ == "__main__":
-    asyncio.run(example_crawl_companies())
+    asyncio.run(example_crawl_jobs())

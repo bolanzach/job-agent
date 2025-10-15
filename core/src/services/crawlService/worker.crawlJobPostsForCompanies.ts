@@ -26,7 +26,8 @@ self.onmessage = async (e: MessageEvent<CrawlRequestMessage>) => {
     }
 
     // Run the Python crawler from the crawler directory using uv
-    const crawlerDir = new URL("../../../../crawler", import.meta.url).pathname;
+    const crawlerDir =
+      new URL("../../../../intelligence", import.meta.url).pathname;
     console.log(
       `[CrawlJobPostsForCompanies] Running: uv run python ${args.join(" ")}`,
     );

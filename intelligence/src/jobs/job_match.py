@@ -1,6 +1,6 @@
 import json
-from intelligence_legacy.src.core_client import CoreAPIClient
-from intelligence.src.ai.src.api import create_potential_match as evaluate_match
+from ..core_client import CoreAPIClient
+from ..ai.src.api import create_potential_match as evaluate_match
 
 
 def create_potential_match(candidate_id: str, job_post_id: str):

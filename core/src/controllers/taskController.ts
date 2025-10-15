@@ -30,7 +30,7 @@ export class TaskController extends Controller {
 
   @Post("enhance/companies")
   public async enhanceCompanies(@Body() req: EnhanceCompanyRequest) {
-    return await crawlService.enhanceJobPostings(req);
+    return await crawlService.enhanceCompanies(req);
   }
 
   @Post("matches")

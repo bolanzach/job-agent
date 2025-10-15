@@ -24,6 +24,11 @@ class CoreAPIClient:
         response.raise_for_status()
         return response.json()
 
+    def update_company(self, company_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
+        response = self.client.put(f"/api/companies/{company_id}", json=data)
+        response.raise_for_status()
+        return response.json()
+
     def create_job_posting(self, job_posting: Dict[str, Any]) -> Dict[str, Any]:
         response = self.client.post("/api/job-posts", json=job_posting)
         response.raise_for_status()
