@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 async def example_crawl_companies():
     companies = [
-        "replenysh",
+        "Rheaply",
     ]
 
     print("Starting companies crawler...")
@@ -41,4 +41,5 @@ async def example_crawl_jobs():
 
 
 if __name__ == "__main__":
-    asyncio.run(example_crawl_jobs())
+    # asyncio.run(example_crawl_jobs())
+    asyncio.run(example_crawl_companies())

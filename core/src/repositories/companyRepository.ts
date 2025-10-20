@@ -32,10 +32,11 @@ export function createCompany(params: CreateCompanyParams) {
     VALUES (?, ?, CURRENT_TIMESTAMP)
     RETURNING id, name, website, created_at
   `;
-  return db.query<Company>(query, [
+  const result = db.query<Company>(query, [
     crypto.randomUUID(),
     params.name,
   ]);
+  return result[0];
 }
 
 export function getCompanyById(id: string): Company | undefined {

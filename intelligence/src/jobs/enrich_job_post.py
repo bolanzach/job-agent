@@ -4,9 +4,9 @@ from ..ai.src.api import extract_job_function
 from ..core_client import CoreAPIClient
 
 
-def enhance_job_posting(job_post_id: str):
+def enrich_job_post(job_post_id: str):
     """
-    Enhance job posting with additional context.
+    Enrich job posting with additional context.
     """
     try:
         with CoreAPIClient() as client:

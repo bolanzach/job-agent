@@ -6,7 +6,7 @@ import logging
 from src.scrapers.job_crawler import crawl_company_jobs
 from src.scrapers.companies_crawler import discover_companies
 from src.jobs.enhance_company import enhance_company
-from src.jobs.enhance_job_post import enhance_job_posting
+from src.jobs.enrich_job_post import enrich_job_post
 from src.jobs.job_match import create_potential_match
 
 logging.basicConfig(
@@ -39,7 +39,7 @@ def main():
     discover_parser = subparsers.add_parser('discover-companies', help='Discover similar companies from seed companies')
     discover_parser.add_argument('seed_companies', nargs='+',
                                  help='Seed company names to start discovery (e.g., Google, Microsoft)')
-    discover_parser.add_argument('--max-depth', type=int, default=3, help='Maximum recursion depth (default: 3)')
+    discover_parser.add_argument('--max-depth', type=int, default=1, help='Maximum recursion depth (default: 3)')
     discover_parser.add_argument('--max-per-level', type=int, default=10,
                                  help='Maximum companies to discover per level (default: 10)')
 
@@ -74,7 +74,7 @@ def main():
                 max_companies_per_level=args.max_per_level
             ))
         elif args.command == 'enhance-job':
-            enhance_job_posting(args.job_id)
+            enrich_job_post(args.job_id)
         elif args.command == 'enhance-company':
             enhance_company(args.company_id)
         elif args.command == 'match':

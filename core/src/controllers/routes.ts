@@ -50,33 +50,23 @@ const models: TsoaRoute.Models = {
         "type": {"ref":"Omit_CandidateJobMatch.id-or-created_at-or-deleted_at-or-updated_at_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "JobPosting": {
+    "SeedTaskRequest": {
         "dataType": "refObject",
         "properties": {
-            "url": {"dataType":"string","required":true},
-            "title": {"dataType":"string","required":true},
-            "text": {"dataType":"string","required":true},
-            "raw_text": {"dataType":"string","required":true},
+            "companyNames": {"dataType":"array","array":{"dataType":"string"},"required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Record_string.JobPosting-Array_": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"array","array":{"dataType":"refObject","ref":"JobPosting"}},"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "CrawlResponse": {
+    "DiscoverCompaniesRequest": {
         "dataType": "refObject",
         "properties": {
-            "success": {"dataType":"boolean","required":true},
-            "data": {"ref":"Record_string.JobPosting-Array_"},
-            "error": {"dataType":"string"},
+            "companyId": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "CrawlRequest": {
+    "CrawlJobsRequest": {
         "dataType": "refObject",
         "properties": {
             "companyIds": {"dataType":"array","array":{"dataType":"string"},"required":true},
@@ -232,8 +222,68 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsTaskController_seed: Record<string, TsoaRoute.ParameterSchema> = {
+                request: {"in":"body","name":"request","required":true,"ref":"SeedTaskRequest"},
+        };
+        app.post('/api/tasks/seed',
+            ...(fetchMiddlewares<RequestHandler>(TaskController)),
+            ...(fetchMiddlewares<RequestHandler>(TaskController.prototype.seed)),
+
+            async function TaskController_seed(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsTaskController_seed, request, response });
+
+                const controller = new TaskController();
+
+              await templateService.apiHandler({
+                methodName: 'seed',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsTaskController_crawlCompanies: Record<string, TsoaRoute.ParameterSchema> = {
+                request: {"in":"body","name":"request","required":true,"ref":"DiscoverCompaniesRequest"},
+        };
+        app.post('/api/tasks/crawl/companies',
+            ...(fetchMiddlewares<RequestHandler>(TaskController)),
+            ...(fetchMiddlewares<RequestHandler>(TaskController.prototype.crawlCompanies)),
+
+            async function TaskController_crawlCompanies(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsTaskController_crawlCompanies, request, response });
+
+                const controller = new TaskController();
+
+              await templateService.apiHandler({
+                methodName: 'crawlCompanies',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsTaskController_crawlJobPostsForCompanies: Record<string, TsoaRoute.ParameterSchema> = {
-                request: {"in":"body","name":"request","required":true,"ref":"CrawlRequest"},
+                request: {"in":"body","name":"request","required":true,"ref":"CrawlJobsRequest"},
         };
         app.post('/api/tasks/crawl/jobs',
             ...(fetchMiddlewares<RequestHandler>(TaskController)),

@@ -1,40 +1,55 @@
-import { Body, Controller, Post, Response, Route, Tags } from "tsoa";
+import { Body, Controller, Post, Route, Tags } from "tsoa";
 import type {
-  CrawlRequest,
-  CrawlResponse,
+  CrawlJobsRequest,
   CreatePotentialMatchRequest,
+  DiscoverCompaniesRequest,
   EnhanceCompanyRequest,
   EnhanceJobPostRequest,
-} from "../services/crawlService/index.ts";
-import { crawlService } from "../services/crawlService/index.ts";
+  SeedTaskRequest,
+} from "../services/./tasksService/index.ts";
+import { tasksService } from "../services/./tasksService/index.ts";
 
 @Route("tasks")
 @Tags("Task Management")
 export class TaskController extends Controller {
-  @Post("crawl/jobs")
-  @Response<CrawlResponse>(201, "Success")
-  @Response(500, "Internal Server Error")
-  public async crawlJobPostsForCompanies(
-    @Body() request: CrawlRequest,
+  @Post("/seed")
+  public async seed(
+    @Body() request: SeedTaskRequest,
   ) {
-    return await crawlService.crawlJobPostsForCompanies({
+    return await tasksService.seed(request);
+  }
+
+  @Post("/crawl/companies")
+  public async crawlCompanies(
+    @Body() request: DiscoverCompaniesRequest,
+  ) {
+    return await tasksService.discoverCompanies(request);
+  }
+
+  @Post("crawl/jobs")
+  public async crawlJobPostsForCompanies(
+    @Body() request: CrawlJobsRequest,
+  ) {
+    return await tasksService.crawlJobPostsForCompanies({
       ...request,
-      useJavaScript: request.useJavaScript ?? false,
+
+      // Crawling jobs usually requires JavaScript rendering
+      useJavaScript: request.useJavaScript ?? true,
     });
   }
 
   @Post("enhance/job-posts")
   public async enhanceJobPostings(@Body() req: EnhanceJobPostRequest) {
-    return await crawlService.enhanceJobPostings(req);
+    return await tasksService.enhanceJobPostings(req);
   }
 
   @Post("enhance/companies")
   public async enhanceCompanies(@Body() req: EnhanceCompanyRequest) {
-    return await crawlService.enhanceCompanies(req);
+    return await tasksService.enhanceCompanies(req);
   }
 
   @Post("matches")
   public async match(@Body() req: CreatePotentialMatchRequest) {
-    return await crawlService.createPotentialMatch(req);
+    return await tasksService.createPotentialMatch(req);
   }
 }

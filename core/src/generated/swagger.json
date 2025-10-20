@@ -81,60 +81,34 @@
 			"CreateMatchParams": {
 				"$ref": "#/components/schemas/Omit_CandidateJobMatch.id-or-created_at-or-deleted_at-or-updated_at_"
 			},
-			"JobPosting": {
+			"SeedTaskRequest": {
 				"properties": {
-					"url": {
-						"type": "string"
-					},
-					"title": {
-						"type": "string"
-					},
-					"text": {
-						"type": "string"
-					},
-					"raw_text": {
-						"type": "string"
+					"companyNames": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
-					"url",
-					"title",
-					"text",
-					"raw_text"
+					"companyNames"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Record_string.JobPosting-Array_": {
-				"properties": {},
-				"additionalProperties": {
-					"items": {
-						"$ref": "#/components/schemas/JobPosting"
-					},
-					"type": "array"
-				},
-				"type": "object",
-				"description": "Construct a type with a set of properties K of type T"
-			},
-			"CrawlResponse": {
+			"DiscoverCompaniesRequest": {
 				"properties": {
-					"success": {
-						"type": "boolean"
-					},
-					"data": {
-						"$ref": "#/components/schemas/Record_string.JobPosting-Array_"
-					},
-					"error": {
+					"companyId": {
 						"type": "string"
 					}
 				},
 				"required": [
-					"success"
+					"companyId"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"CrawlRequest": {
+			"CrawlJobsRequest": {
 				"properties": {
 					"companyIds": {
 						"items": {
@@ -411,25 +385,12 @@
 				}
 			}
 		},
-		"/tasks/crawl/jobs": {
+		"/tasks/seed": {
 			"post": {
-				"operationId": "CrawlJobPostsForCompanies",
+				"operationId": "Seed",
 				"responses": {
-					"201": {
-						"description": "Success",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/CrawlResponse"
-								}
-							}
-						}
-					},
 					"204": {
 						"description": "No content"
-					},
-					"500": {
-						"description": "Internal Server Error"
 					}
 				},
 				"tags": [
@@ -442,7 +403,57 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CrawlRequest"
+								"$ref": "#/components/schemas/SeedTaskRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/tasks/crawl/companies": {
+			"post": {
+				"operationId": "CrawlCompanies",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Task Management"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DiscoverCompaniesRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/tasks/crawl/jobs": {
+			"post": {
+				"operationId": "CrawlJobPostsForCompanies",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Task Management"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CrawlJobsRequest"
 							}
 						}
 					}
@@ -559,10 +570,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/Company"
-									},
-									"type": "array"
+									"$ref": "#/components/schemas/Company"
 								}
 							}
 						}

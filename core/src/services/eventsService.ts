@@ -1,20 +1,24 @@
 import { ThreadedWorkQueueService, WorkQueue } from "./workQueueService.ts";
 
 const MAP_EVENT_TO_WORKER = {
+  "DiscoverCompanies": new URL(
+    "./tasksService/worker.discoverCompanies.ts",
+    import.meta.url,
+  ),
   "CrawlJobPostsForCompanies": new URL(
-    "./crawlService/worker.crawlJobPostsForCompanies.ts",
+    "./tasksService/worker.crawlJobPostsForCompanies.ts",
     import.meta.url,
   ),
   "CreatePotentialMatch": new URL(
-    "./crawlService/worker.createPotentialMatch.ts",
+    "./tasksService/worker.createPotentialMatch.ts",
     import.meta.url,
   ),
   "EnhanceCompany": new URL(
-    "./crawlService/worker.enhanceCompany.ts",
+    "./tasksService/worker.enhanceCompany.ts",
     import.meta.url,
   ),
   "EnhanceJobPost": new URL(
-    "./crawlService/worker.enhanceJobPost.ts",
+    "./tasksService/worker.enhanceJobPost.ts",
     import.meta.url,
   ),
 } satisfies Record<string, URL>;
