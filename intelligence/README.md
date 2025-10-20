@@ -5,18 +5,21 @@ A web crawler for extracting job postings and company information from websites.
 ## Setup
 
 ### Prerequisites
+
 - Python 3.11+
 - [uv](https://docs.astral.sh/uv/) package manager
 
 ### Installation
 
 1. Install dependencies using uv:
+
 ```bash
-cd crawler
+cd intelligence
 uv sync
 ```
 
 2. If you plan to use JavaScript rendering (for dynamic websites), install Playwright browsers:
+
 ```bash
 uv run playwright install chromium
 ```
@@ -24,6 +27,7 @@ uv run playwright install chromium
 ## Configuration
 
 Set the Core API URL (optional, defaults to http://localhost:8000):
+
 ```bash
 export CORE_API_URL=http://localhost:8000
 ```
